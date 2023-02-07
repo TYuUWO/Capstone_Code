@@ -5,9 +5,9 @@ function [Rvals,Lvals,valsMap] = RL_Only(ports,TFs)
     p2p = ports*(ports+1)/2;
     % initialize port to port connections;
     % ex. Y13: node 1 to node 3
-    valsMap = strings(1,p2p);
+    valsMap = [];
     for i = 1:p2p
-        valsMap(i) = "n"+string(i);
+        valsmap(i)
     end
     % 1 Rval, 1 Lval per port to port
     Rvals = zeros(1,p2p);
