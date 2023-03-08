@@ -12,20 +12,30 @@ function [Rvals,Lvals,valsMap] = RLC_Only(ports,TFs)
     % 1 Rval, 1 Lval per port to port per matrix
     Rvals = zeros(1,p2p);
     Lvals = zeros(1,p2p);
+    Cvals = zeros(1,p2p);
+    Gvals = zeros(1,p2p);
     TF2 = zeros(size(TFs));
     % loop over TFs;
     % TFs matrix should be symmetric across diagonal
     for i = 1:p2p
         if (i==1) 
             % initial case (1,n)
+            n = size(TFs,2);
             TF2(1,n) = TFs(1,n);
-            % (1/L)/(s+R/L)
-            % c = 1/L, p = -R/L
-            
+            if(isreal(TFs(1,n)))
+               % (1/L)/(s+R/L)
+               % c = 1/L, p = -R/L
+               Rvals(1) = ();
+               Lvals(1) = ();
+            else
+               % complex case (RLC)
+               
+            end
         end
         % compare TF2 to TFs
         % set Rval and Lval
         % add term to TF2
+        
     end
     % do last comparison of whole matrix?
 end
