@@ -1,4 +1,4 @@
-function [Rvals,Lvals,valsMap] = RL_Only(ports,TFs)
+function [Rvals,Lvals,valsMap] = RLC_Only(ports,TFs)
     % calculate number of connections
     % assume matrix symmetrical across diagonal;
     % number of terms for n ports = sum from 1 to n;
