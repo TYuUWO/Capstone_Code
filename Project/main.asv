@@ -41,9 +41,8 @@ if(size(poles)==1)
     [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only();
 % otherwise use MultiRLC
 else
-    [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC();
-end
     
+end
 % use for testing (validation) ONLY
 % use Y = [C((sI-A)^-1)B+D+sE]
 % can perform operations on tf struct

@@ -1,4 +1,4 @@
-function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
+function [Rvals,Lvals,valsMap] = RLC_Only(ports,poles,res)
     % calculate number of connections
     % assume matrix symmetrical across diagonal;
     % number of terms for n ports = sum from 1 to n;
@@ -14,20 +14,20 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
     Lvals = zeros(1,p2p);
     Cvals = zeros(1,p2p);
     Gvals = zeros(1,p2p);
-    TF = zeros(size(res));
+    TF = zeros(size());
     % loop over TFs;
     % TFs matrix should be symmetric across diagonal
     for i = 1:p2p
         if (i==1) 
             % initial case (1,n)
-            n = ports;
-            TF(1,n) = res(1,n);
+            n = size(TFs,2);
+            TF2(1,n) = TFs(1,n);
             if(isreal(TFs(1,n)))
                % (1/L)/(s+R/L)
                % c = 1/L, p = -R/L
                Lvals(1) = (1/res(1,n));
                % R = -pL
-               Rvals(1) = (pole(1)/res(1,n));
+               Rvals(1) = (poles(1)/res(1,n));
             else
                % complex case (RLC)
                
