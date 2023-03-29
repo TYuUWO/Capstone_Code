@@ -6,17 +6,16 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
     % initialize port to port connections;
     % ex. Y13: node 1 to node 3
     valsMap = strings(1,p2p);
-    for i = 1:p2p
-        valsMap(i) = "n"+string(ceil(i/max(size(res))))+string(mod(i,max(size(res))));
-    end
+    
     % 1 Rval, 1 Lval per port to port per matrix
     Rvals = zeros(1,p2p);
     Lvals = zeros(1,p2p);
     Cvals = zeros(1,p2p);
     Gvals = zeros(1,p2p);
     TF = zeros(size(res));
-    count = 0;
+    %count = 0;
     real = 1;
+    m = 1;
     % loop over TFs;
     % TFs matrix should be symmetric across diagonal
     for i = 1:p2p
@@ -38,13 +37,18 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
                Lvals(1) = (1/res(1,n));
                % R = -pL
                Rvals(1) = (-(pole(1)/res(1,n)));
+               if(res(1,n) == 0)
+                   Lvals(1) = 0;
+                   Rvals(1) = 0;
+               end
+               valsMap(i) = "n"+1+n;
             else
                % complex case (RLC)
                % 2 complex conjugate poles
                real = 0;
             end
-            count = count+1;
-        end
+            %count = count+1;
+        else
         % compare TF2 to TFs
         % set Rval and Lval
         % add term to TF2
@@ -52,20 +56,22 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
         % use a flag because of matlab gimmicks
         if(real)
             % calculate m and n
-            m = mod((ports-count),ports);
-            if(m == 0)
-                m=3;
+            n = n-1;
+            if(n < m)
+                n = ports;
+                m=m+1;
             end
-            n = ceil(count/ports);
-            % figure out a m n that stops at diagonal
+            
+            % figure out a (m,n) that stops at diagonal
             % compare
             temp = res(m,n) - TF(m,n);
             
             % adjust TF matrix
             TF(m,n) = TF(m,n) + temp;
-            TF(n,m) = TF(n,m) + temp;
+            
             % check for edge case
             if(m ~= n)
+                TF(n,m) = TF(n,m) + temp;
                 TF(m,m) = TF(m,m) - temp;
                 TF(n,n) = TF(n,n) - temp;
             end
@@ -77,12 +83,18 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
             Lvals(i) = (1/temp);
             % R = -pL
             Rvals(i) = (pole(1)/temp);
+            if(temp == 0 && res(m,n) == 0)
+                Lvals(i) = 0;
+                Rvals(i) = 0;
+            end
+            valsMap(i) = "n"+m+n;
         else
             % complex case (RLC)
             % 2 complex conjugate poles
             disp("test")
         end
-        count = count+1;
+        %count = count+1;
+        end
     end
     % do last comparison of whole matrix?
     %test
