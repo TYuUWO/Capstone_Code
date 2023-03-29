@@ -33,12 +33,12 @@ for i = 1:size(poles)
     poles(i) = A(index,index);
 end
 
-% extract residue data
+% pass residues in as is
 
 
-% if there's only 1 pole, use RLC_Only
-if(size(poles)==1)
-    [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only();
+% if there's only 1 pole or 2 complex, use RLC_Only
+if((size(poles)==1) | (((size(poles)==2) & not(isreal(poles(1))))))
+    [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,poles,C);
 % otherwise use MultiRLC
 else
     [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC();

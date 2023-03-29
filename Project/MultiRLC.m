@@ -26,7 +26,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
             % initial case (1,n)
             n = ports;
             TF(1,n) = res(1,n);
-            if(isreal(res(1,n)))
+            if(isreal(res(1,n)) && isreal(poles(1)))
                % (1/L)/(s+R/L)
                % c = 1/L, p = -R/L
                % L = 1/c
@@ -35,6 +35,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                Rvals(1) = (poles(1)/res(1,n));
             else
                % complex case (RLC)
+               % 2 complex conjugate poles
                
             end
         end
