@@ -33,32 +33,38 @@ while ~feof(fileID)
 
         outLine = outLine + 1;
 
-    else % neither first not last line in the set
+    else % neither first nor last line in the set
         temp = temp + " " + line;
-
     end
 
     inLine = inLine + 1;
 end
 
-% allocate array for s parameters
-sparams = zeros(size(stringArray) * NUMBER_OF_PORTS / 2);
 
-count = 1; % final count of s params
+numsArray = zeros(size(stringArray, 2), 2*NUMBER_OF_PORTS*NUMBER_OF_PORTS);
+% allocate array for s parameters
+sparams = zeros(NUMBER_OF_PORTS, NUMBER_OF_PORTS, max(size(numsArray)));
+% N x N x frequencies
+
+% there's 32 numbers in a line
+% 16 complex numbers in a line
+% need a NxN array for every line
+
 
 % get every number in the string array and make them their own s parameters
-for i = 1:size(stringArray) * NUMBER_OF_PORTS * NUMBER_OF_PORTS % 4 ports = 16 complex numbers per line
+for i = 1:max(size(stringArray)) % for every line, every string in stringArray
 
-    if(mod(i,2) == 0) % pair every 2 numbers as one complex number
-        sparams(count) = double(stringArray(i)) + double(stringArray(i+1)) * 1j;
-        count = count + 1;
+    numsArray(i,:) = str2num(stringArray(i)); % make each number its own element
+    count = 1; % final count of s params
 
+    for j = 1:NUMBER_OF_PORTS % for 4 complex numbers (8 numbers total)
+        for k = 1:2:NUMBER_OF_PORTS*2 
+            sparams(j,round(k/2),i) = numsArray(i,(k+(j-1)*8)) + numsArray(i,((k+1)+(j-1)*8))*1j;
+        end
     end
 end
 
 fclose(fileID);
 
-% eventually this will be a function that returns yparams
+% this function returns yparams
 yparams = s2y(sparams);
-
-
