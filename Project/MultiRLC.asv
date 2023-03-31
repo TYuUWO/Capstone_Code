@@ -43,15 +43,10 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     Lvals(p) = (1/res(1,n));
                     % R = -pL
                     Rvals(p) = (poles(p*ports)/res(1,n));
-                    % set zeros
-                    Cvals(p) = 0;
-                    Gvals(p) = 0;
-                    
-                    % contribution to (1,1),(n,n),(1,n), and (n,1)
                     TF(1,n) = res(1,n);
                     TF(ports,(n-(ports-1))) = TF(1,n);
-                    TF(1,(n-(ports-1))) = -(TF(1,n));
-                    TF(ports,n) = -(TF(1,n));
+                    TF() = -(TF());
+                    TF(ports,()) = -(TF())
                 else
                     % complex case (RLC)
                     real = false;
@@ -63,8 +58,6 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
             % set vals
             % add term to TF
 
-            % loop over remaining terms (p2p-1 iterations) 
-            
             
         
         end
