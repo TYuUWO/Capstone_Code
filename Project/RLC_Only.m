@@ -91,7 +91,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
         else
             % complex case (RLC)
             % 2 complex conjugate poles
-            disp("test")
+            disp("program shouldn't reach here")
         end
         %count = count+1;
         end

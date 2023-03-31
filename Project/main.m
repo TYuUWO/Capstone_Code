@@ -36,8 +36,8 @@ end
 % pass residues in as is
 
 
-% if there's only 1 pole or 2 complex, use RLC_Only
-if((size(poles)==1) | (((size(poles)==2) & not(isreal(poles(1))))))
+% if there's only 1 pole (repeated for each port)
+if((size(poles)==ports))
     [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,poles,C);
 % otherwise use MultiRLC
 else
