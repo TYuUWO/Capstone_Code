@@ -41,7 +41,7 @@ if((size(poles)==ports))
     [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,poles,C);
 % otherwise use MultiRLC
 else
-    [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC();
+    [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,C);
 end
     
 % use for testing (validation) ONLY

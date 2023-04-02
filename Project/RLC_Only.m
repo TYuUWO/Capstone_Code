@@ -40,6 +40,8 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
                if(res(1,n) == 0)
                    Lvals(1) = 0;
                    Rvals(1) = 0;
+                   Cvals(i) = 0;
+                   Gvals(i) = 0;
                end
                valsMap(i) = "n"+1+n;
             else
@@ -83,9 +85,13 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
             Lvals(i) = (1/temp);
             % R = -pL
             Rvals(i) = (pole(1)/temp);
+            Cvals(i) = 0;
+            Gvals(i) = 0;
             if(temp == 0 && res(m,n) == 0)
                 Lvals(i) = 0;
                 Rvals(i) = 0;
+                Cvals(i) = 0;
+                Gvals(i) = 0;
             end
             valsMap(i) = "n"+m+n;
         else
