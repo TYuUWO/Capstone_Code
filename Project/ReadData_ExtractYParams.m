@@ -1,3 +1,5 @@
+clear all
+
 filename = "FEXT_2Away_Hdr_D89_Rcpt_B89_Clamped.s4p";
 fileID = fopen(filename); % open the file from which to read data
 
@@ -66,5 +68,7 @@ end
 
 fclose(fileID);
 
-% this function returns yparams
+% returns yparams
 yparams = s2y(sparams);
+
+yReshaped = reshape(yparams, [NUMBER_OF_PORTS*NUMBER_OF_PORTS length(frequencies)]);
