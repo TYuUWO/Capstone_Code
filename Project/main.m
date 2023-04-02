@@ -25,11 +25,12 @@ ports = input("Number of ports: ");
 
 % extract pole data
 % poles are repeated for each port
-poles = zeros(max(size(A))/ports);
-for i = 1:size(poles)
+poles = zeros(1,max(size(A)));
+
+for i = 1:max(size(poles))
     % new pole appears at i + # of poles;
     % each multiple of # of poles will cover all poles
-    index = i*poles;
+    index = i;
     poles(i) = A(index,index);
 end
 
@@ -37,7 +38,7 @@ end
 
 
 % if there's only 1 pole (repeated for each port)
-if((size(poles)==ports))
+if((max(size(poles))==ports))
     [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,poles,C);
 % otherwise use MultiRLC
 else
