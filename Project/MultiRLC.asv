@@ -63,6 +63,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     TF(ports,p+compCount) = TF(1,n);
                     TF(1,p+compCount) = -(TF(1,n));
                     TF(ports,n) = -(TF(1,n));
+                    
                 else
                     % complex case (RLC)
                     real = false;
@@ -74,13 +75,13 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     % 2r0s - 2p0r0 - 2r1p1 (num)
                     % s^2 - 2p0s + (p0^2 + p1^2) (den)
                     % 1/L = 2r0 -> L = 1/(2r0)
-                    %Lvals(i+(p2p*(p-1))) = 1/(2*real(res(1,?)));
+                    Lvals(i+(p2p*(p-1))) = 1/(2*real(res(1,?)));
                     % 
-                    %Rvals(i+(p2p*(p-1))) = 
+                    Rvals(i+(p2p*(p-1))) = 
                     %
-                    %Cvals(i+(p2p*(p-1))) = 
+                    Cvals(i+(p2p*(p-1))) = 
                     %
-                    %Gvals(i+(p2p*(p-1))) = 
+                    Gvals(i+(p2p*(p-1))) = 
                     
                     if(res(1,n) == 0)
                         Lvals(p) = 0;
@@ -111,20 +112,20 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     % figure out a (m,n) that stops at diagonal
                     % compare
                     temp = res(m,n) - TF(m,n);
-                
+                    
                     % adjust TF matrix
                     TF(m,n) = TF(m,n) + temp;
-                    disp()
+                    
                     % check for edge case
                     if(m ~= nVirt)
                         %n,m
-                        TF(nVirt,(m*((max(size(poles))/ports)-1)+p+compCount-1)) = TF(nVirt,(m*((max(size(poles))/ports)-1)+p+compCount-1)) + temp;
+                        TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) + temp;
                         %m,m
-                        TF(m,(m*((max(size(poles))/ports)-1)+p+compCount-1)) = TF(m,(m*((max(size(poles))/ports)-1)+p+compCount-1)) - temp;
+                        TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) - temp;
                         %n,n
                         TF(nVirt,n) = TF(nVirt,n) - temp;
                     end
-                
+                    
                     % (1/L)/(s+R/L)
                     % c = 1/L, p = -R/L
                     % 1/c = L
@@ -146,7 +147,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     % figure out a (m,n) that stops at diagonal
                     % compare set of complex residues?
                     % compare
-                    %temp = 
+                    temp = 
                     
                 end
             end
@@ -169,6 +170,6 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
     Lvals = Lvals(1:p2p_total-(compCount*p2p));
     Cvals = Cvals(1:p2p_total-(compCount*p2p));
     Gvals = Gvals(1:p2p_total-(compCount*p2p));
-    disp(TF)
-    disp(res)
+    %disp(TF)
+    %disp(res)
 end

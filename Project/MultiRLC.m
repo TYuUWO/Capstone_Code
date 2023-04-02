@@ -57,7 +57,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                         Cvals(p) = 0;
                         Gvals(p) = 0;
                     end
-                    valsMap(i+(p2p*(p-1))) = "n"+1+(n-(ports*(p+compCount-1)));
+                    valsMap(i+(p2p*(p-1))) = "n"+1+(nVirt);
                     % contribution to (1,1),(n,n),(1,n), and (n,1)
                     TF(1,n) = res(1,n);
                     TF(ports,p+compCount) = TF(1,n);
