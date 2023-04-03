@@ -43,7 +43,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
                    Cvals(i) = 0;
                    Gvals(i) = 0;
                end
-               valsMap(i) = "n"+1+n;
+               valsMap(i) = "n"+1+"-"+n;
             else
                % complex case (RLC)
                % 2 complex conjugate poles
@@ -87,13 +87,13 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
             Rvals(i) = (pole(1)/temp);
             Cvals(i) = 0;
             Gvals(i) = 0;
-            if(temp == 0 && res(m,n) == 0)
+            if(temp == 0)
                 Lvals(i) = 0;
                 Rvals(i) = 0;
                 Cvals(i) = 0;
                 Gvals(i) = 0;
             end
-            valsMap(i) = "n"+m+n;
+            valsMap(i) = "n"+m+"-"+n;
         else
             % complex case (RLC)
             % 2 complex conjugate poles
@@ -104,6 +104,6 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = RLC_Only(ports,pole,res)
     end
     % do last comparison of whole matrix?
     %test
-    disp(TF==res)
+    %disp(TF==res)
     disp(TF)
 end

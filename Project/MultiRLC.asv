@@ -57,7 +57,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                         Cvals(i+(p2p*(p-1))) = 0;
                         Gvals(i+(p2p*(p-1))) = 0;
                     end
-                    valsMap(i+(p2p*(p-1))) = "n"+1+(nVirt);
+                    valsMap(i+(p2p*(p-1))) = "n"+1+"-"+(nVirt);
                     % contribution to (1,1),(n,n),(1,n), and (n,1)
                     TF(1,n) = res(1,n);
                     TF(ports,p+compCount) = TF(1,n);
@@ -108,7 +108,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                         Cvals(i+(p2p*(p-1))) = 0;
                         Gvals(i+(p2p*(p-1))) = 0;
                     end
-                    valsMap(i+(p2p*(p-1))) = "n"+1+(n-(ports*(p+compCount-1)));
+                    valsMap(i+(p2p*(p-1))) = "n"+1+"-"+nVirt;
                 end
             else
                 % compare TF to res
@@ -154,8 +154,8 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     Rvals(i+(p2p*(p-1))) = (poles(p+compCount)/temp);
                     Cvals(i+(p2p*(p-1))) = 0;
                     Gvals(i+(p2p*(p-1))) = 0;
-                    valsMap(i+(p2p*(p-1))) = "n"+m+nVirt;
-                    if(temp == 0 && res(m,n) == 0)
+                    valsMap(i+(p2p*(p-1))) = "n"+m+"-"+nVirt;
+                    if(temp == 0)
                         Lvals(i+(p2p*(p-1))) = 0;
                         Rvals(i+(p2p*(p-1))) = 0;
                         Cvals(i+(p2p*(p-1))) = 0;
@@ -177,16 +177,18 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     r1c = imag(TF(1,n));
                     
                     % compare
+                    %-- potential err
                     temp0 = 2*r0 - 2*r0c; % diff0
                     temp1 = 2*p0*r0c+2*r1c*p1-(2*p0*r0)-(2*r1*p1); % diff1
                     add1 = (temp1/(2*p1))+(p0*r0/p1)-(p0*r0c/p1)-2*r1c;
                         
                     % adjust TF matrix
+                    %-- potential err
                     TF(m,n) = TF(m,n) + (temp0/2)+(add1);
                     TF(m,n+1) = TF(m,n+1) + (temp0/2)-(add1);
                     
                     % check for edge case
-                    if(m ~= nVirt)
+                    if(m ~= nVirt) %-- potential err
                         %n,m
                         TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) + (temp0/2)+(add1);
                         %n,m+1
@@ -206,19 +208,19 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     % 
                     Rvals(i+(p2p*(p-1))) = ((p0^2)+(p1^2)/temp1)-1;
                     %
-                    %Gvals(i+(p2p*(p-1))) =
+                    Gvals(i+(p2p*(p-1))) =
                     %
-                    %Cvals(i+(p2p*(p-1))) = 
+                    Cvals(i+(p2p*(p-1))) = 
                     
                     
                     
-                    if(res(1,n) == 0)
+                    if(temp0 == 0 && temp1 == 0)
                         Lvals(i+(p2p*(p-1))) = 0;
                         Rvals(i+(p2p*(p-1))) = 0;
                         Cvals(i+(p2p*(p-1))) = 0;
                         Gvals(i+(p2p*(p-1))) = 0;
                     end
-                    valsMap(i+(p2p*(p-1))) = "n"+1+(n-(ports*(p+compCount-1)));
+                    valsMap(i+(p2p*(p-1))) = "n"+nVirt+"-"+m;
                     
                 end
             end
@@ -230,17 +232,19 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
             % increment complex counter
             compCount=compCount+1;
         end
+        
         % check if everything is accounted for
         if(p == ((max(size(poles))/ports)-compCount))
             break
         end
     end
     % cut empty elements from arrays
-    valsMap = valsMap(1:p2p_total-compCount);
+    valsMap = valsMap(1:p2p_total-(compCount*p2p));
     Rvals = Rvals(1:p2p_total-(compCount*p2p));
     Lvals = Lvals(1:p2p_total-(compCount*p2p));
     Cvals = Cvals(1:p2p_total-(compCount*p2p));
     Gvals = Gvals(1:p2p_total-(compCount*p2p));
     %disp(TF)
     %disp(res)
+    %disp(TF==res)
 end
