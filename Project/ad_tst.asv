@@ -43,13 +43,12 @@ for x=fstart:fstep:fstop
 end
 reYY = zeros(1,300);
 for ind = 1:300
-    reYY(ind) = real(YY(1,1,ind));
+    reYY = real(YY(1,1,ind));
 end
 kmm = zeros(1,300);
 for ind = 1:300
     kmm(ind) = real(f(1,ind));
 end
 plot(imag(freq),reYY)
-plot(imag(freq),real(f(1,:)),'k--')
-plot(imag(freq),real(YY_11),'r--')
+plot()
 %,imag(freq),real(f(1,:)),'k--',imag(freq),real(YY_11),'r--'
