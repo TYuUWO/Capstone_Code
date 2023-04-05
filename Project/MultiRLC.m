@@ -211,7 +211,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     %
                     Gvals(i+(p2p*(p-1))) = 1/((2*p0*(R^2))+((p0^2)+(p1^2))/temp0);
                     %
-                    Cvals(i+(p2p*(p-1))) = 2*p0*(R^3)/(((p0^2)+(p1^2)*temp0));
+                    Cvals(i+(p2p*(p-1))) = 1/((2*p0*R+(R^2)*temp0-((p0^2)+(p1^2))));
                     
                     
                     

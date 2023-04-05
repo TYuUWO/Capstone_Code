@@ -184,17 +184,17 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                         
                     % adjust TF matrix
                     %-- potential err
-                    TF(m,n) = TF(m,n) + (temp0/2)-(add1*1j);
-                    TF(m,n+1) = TF(m,n+1) + (temp0/2)+(add1*1j);
+                    TF(m,n) = TF(m,n) + (temp0/2)+(add1*1j);
+                    TF(m,n+1) = TF(m,n+1) + (temp0/2)-(add1*1j);
                     
                     % check for edge case
                     if(m ~= nVirt) %-- potential err
                         %n,m
-                        TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) + (temp0/2)-(add1*1j);
+                        TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) + (temp0/2)+(add1*1j);
                         %n,m+1
-                        TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount+1)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount+1)) + (temp0/2)+(add1*1j);
+                        TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount+1)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount+1)) + (temp0/2)-(add1*1j);
                         %m,m
-                        TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) - ((temp0/2)-(add1*1j));
+                        TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) - ((temp0/2)+(add1*1j));
                         %m,m+1
                         TF(m,((max(size(poles))/ports)*(m-1)+p+compCount+1)) = TF(m,((max(size(poles))/ports)*(m-1)+p+compCount+1)) - ((temp0/2)-(add1*1j));
                         %n,n
@@ -211,7 +211,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     %
                     Gvals(i+(p2p*(p-1))) = 1/((2*p0*(R^2))+((p0^2)+(p1^2))/temp0);
                     %
-                    Cvals(i+(p2p*(p-1))) = 2*p0*(R^3)/(((p0^2)+(p1^2)*temp0));
+                    Cvals(i+(p2p*(p-1))) = 1/2*p0*(R^3)/(((p0^2)+(p1^2)*temp0));
                     
                     
                     
