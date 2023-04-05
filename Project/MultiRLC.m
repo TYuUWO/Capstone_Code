@@ -167,14 +167,14 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     % compare set of complex residues?
                     % real(x), imag(x) -> r0 real(res), r1 imag(res),
                     % p0 real(pole), p1 imag(pole)
-                    r0 = real(res(1,n));
-                    r1 = imag(res(1,n));
+                    r0 = real(res(m,n));
+                    r1 = imag(res(m,n));
                     
                     p0 = real(poles(p+compCount));
                     p1 = imag(poles(p+compCount));
                     
-                    r0c = real(TF(1,n));
-                    r1c = imag(TF(1,n));
+                    r0c = real(TF(m,n));
+                    r1c = imag(TF(m,n));
                     
                     % compare
                     %-- potential err
@@ -184,23 +184,23 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                         
                     % adjust TF matrix
                     %-- potential err
-                    TF(m,n) = TF(m,n) + (temp0/2)+(add1);
-                    TF(m,n+1) = TF(m,n+1) + (temp0/2)-(add1);
+                    TF(m,n) = TF(m,n) + (temp0/2)+(add1*1j);
+                    TF(m,n+1) = TF(m,n+1) + (temp0/2)-(add1*1j);
                     
                     % check for edge case
                     if(m ~= nVirt) %-- potential err
                         %n,m
-                        TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) + (temp0/2)+(add1);
+                        TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount)) + (temp0/2)+(add1*1j);
                         %n,m+1
-                        TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount+1)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount+1)) + (temp0/2)-(add1);
+                        TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount+1)) = TF(nVirt,((max(size(poles))/ports)*(m-1)+p+compCount+1)) + (temp0/2)-(add1*1j);
                         %m,m
-                        TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) - ((temp0/2)+(add1));
+                        TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) = TF(m,((max(size(poles))/ports)*(m-1)+p+compCount)) - ((temp0/2)+(add1*1j));
                         %m,m+1
-                        TF(m,((max(size(poles))/ports)*(m-1)+p+compCount+1)) = TF(m,((max(size(poles))/ports)*(m-1)+p+compCount+1)) - ((temp0/2)-(add1));
+                        TF(m,((max(size(poles))/ports)*(m-1)+p+compCount+1)) = TF(m,((max(size(poles))/ports)*(m-1)+p+compCount+1)) - ((temp0/2)-(add1*1j));
                         %n,n
-                        TF(nVirt,n) = TF(nVirt,n) - ((temp0/2)+(add1));
+                        TF(nVirt,n) = TF(nVirt,n) - ((temp0/2)+(add1*1j));
                         %n,n+1
-                        TF(nVirt,n+1) = TF(nVirt,n+1) - ((temp0/2)-(add1));
+                        TF(nVirt,n+1) = TF(nVirt,n+1) - ((temp0/2)-(add1*1j));
                     end
                     
                     % 1/L = diff0 -> L = 1/diff0
@@ -222,7 +222,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                         Gvals(i+(p2p*(p-1))) = 0;
                     end
                     valsMap(i+(p2p*(p-1))) = "n"+m+"-"+nVirt;
-                    
+                    %disp(r0); disp(temp0)
                 end
             end
         
@@ -245,7 +245,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
     Lvals = Lvals(1:p2p_total-(compCount*p2p));
     Cvals = Cvals(1:p2p_total-(compCount*p2p));
     Gvals = Gvals(1:p2p_total-(compCount*p2p));
-    %disp(TF)
+    disp(TF)
     %disp(res)
     %disp(TF==res)
 end
