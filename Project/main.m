@@ -46,7 +46,7 @@ else
 end
 
 % call function to write netlist
-writeNetlist(Rvals,Lvals,Cvals,Gvals,valsMap);
+writeNetlist(valsMap,Rvals,Lvals,Cvals,Gvals);
 
 % use for testing (validation) ONLY
 % use Y = [C((sI-A)^-1)B+D+sE]

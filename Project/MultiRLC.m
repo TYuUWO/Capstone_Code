@@ -250,4 +250,5 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
     %disp(TF)
     %disp(res)
     disp(TF==res)
+    
 end

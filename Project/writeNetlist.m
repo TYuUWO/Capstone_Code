@@ -4,8 +4,9 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals)
     fprintf(fid, "%s\n\n", "Output Netlist"); % write title
 
     for i = 1:length(valsMap)
-        nodex = extractBefore(valsMap(i), '-');
-        nodey = 'n' + extractAfter(valsMap(i), '-') + 'i';
+        tempStr = valsMap(i);
+        nodex = extractBefore(tempStr, '-');
+        nodey = 'n' + extractAfter(tempStr, '-') + 'i';
 
         fprintf(fid, "R%u %s %s %f \n", i, nodex, nodey, Rvals(i));
         % Ri from node x to node y, with value from Rvals
@@ -24,7 +25,7 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals)
         % Li from node x to node y, with value from Lvals
 
         nodex = nodey;
-        nodey = extractBefore(valsMap(i), 'i');
+        nodey = extractBefore(tempStr, 'i');
     end
 
     %D is resistor in parallel with each node to node connection, on the
