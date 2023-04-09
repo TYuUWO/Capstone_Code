@@ -180,8 +180,10 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     %-- potential err
                     temp0 = 2*r0 - 2*r0c; % diff0
                     temp1 = 2*p0*r0c+2*r1c*p1-(2*p0*r0)-(2*r1*p1); % diff1
-                    add1 = (temp1/(2*p1))+(p0*r0/p1)-(p0*r0c/p1)-2*r1c;
-                        
+                    
+                    %add1 = (temp1/(2*p1))+(p0*r0/p1)-(p0*r0c/p1)-2*r1c;
+                    add1 = (r0c*p0)
+                    
                     % adjust TF matrix
                     %-- potential err
                     TF(m,n) = TF(m,n) + (temp0/2)+(add1*1j);
@@ -211,7 +213,7 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
                     %
                     Gvals(i+(p2p*(p-1))) = 1/((2*p0*(R^2))+((p0^2)+(p1^2))/temp0);
                     %
-                    Cvals(i+(p2p*(p-1))) = 1/2*p0*(R^3)/(((p0^2)+(p1^2)*temp0));
+                    Cvals(i+(p2p*(p-1))) = 1/((2*p0*R+(R^2)*temp0-((p0^2)+(p1^2))));
                     
                     
                     
