@@ -44,7 +44,10 @@ if((max(size(poles))==ports))
 else
     [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,C);
 end
-    
+
+% call function to write netlist
+writeNetlist(Rvals,Lvals,Cvals,Gvals,valsMap);
+
 % use for testing (validation) ONLY
 % use Y = [C((sI-A)^-1)B+D+sE]
 % can perform operations on tf struct
