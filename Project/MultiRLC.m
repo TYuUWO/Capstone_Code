@@ -247,8 +247,8 @@ function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
     Lvals = Lvals(1:p2p_total-(compCount*p2p));
     Cvals = Cvals(1:p2p_total-(compCount*p2p));
     Gvals = Gvals(1:p2p_total-(compCount*p2p));
-    %disp(TF)
+    disp(TF)
     %disp(res)
-    disp(TF==res)
+    %disp(TF==res)
     
 end

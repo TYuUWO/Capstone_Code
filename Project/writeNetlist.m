@@ -1,4 +1,4 @@
-function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals)
+function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
 
     fid = fopen( 'outputNetlist.cir', 'wt' ); % file id to open and write to
     fprintf(fid, "%s\n\n", "Output Netlist"); % write title
@@ -72,7 +72,43 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals)
     %D is resistor in parallel with each node to node connection, on the
     %diagonal
     %D and E are to be looped through as a diagonal matrix
-
+    p2p = ports*(ports+1)/2;
+    m = 1;
+    if(D ~= 0)
+        for i=1:p2p
+             if (i==1) 
+                % initial case (1,n)
+                n = ports;
+                fprintf(fid, "R%u %s %s %f \n", length(valsMap)+i, "n1", ("n"+n), D(1,n));
+             else
+                % calculate m and n
+                n = n-1;
+                if(n < m)
+                    n = ports;
+                    m=m+1;
+                end
+                fprintf(fid, "R%u %s %s %f \n", length(valsMap)+i, ("n"+m), ("n"+n), D(m,n));
+             end
+        end
+    end
+    m = 1;
+    if(E ~= 0)
+        for i=1:p2p
+            if (i==1) 
+                % initial case (1,n)
+                n = ports;
+                fprintf(fid, "C%u %s %s %f \n", length(valsMap)+p2p+i, "n1", ("n"+n), E(1,n));
+            else
+               % calculate m and n
+                n = n-1;
+                if(n < m)
+                    n = ports;
+                    m=m+1;
+                end
+                fprintf(fid, "C%u %s %s %f \n", length(valsMap)+p2p+i, ("n"+m), ("n"+n), E(m,n));
+            end
+        end
+    end
     fprintf(fid, "\n%s\n", ".end");
 
     fclose(fid);
