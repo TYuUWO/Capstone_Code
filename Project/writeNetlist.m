@@ -13,6 +13,8 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
             if(Lvals(i)~=0)
                 % complex case; I assume G = 0 if C =0
                 if(Cvals(i)~=0)
+                    % %s on an integer will map onto an encoded character
+                    % convert value to string?
                     fprintf(fid, "R%u %s %s %s \n", i, nodex, ("m"+counter), Rvals(i));
                     fprintf(fid, "L%u %s %s %s \n", i, ("m"+counter), ("m"+(counter+1)), Lvals(i));
                     counter = counter+1;
