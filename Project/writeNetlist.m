@@ -20,7 +20,7 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
                     counter = counter+1;
                     % I assume parallel is just 2 lines with same nodes
                     fprintf(fid, "C%u %s %s %s \n", i, ("m"+counter), nodey, compose("%.8e",Cvals(i)));
-                    fprintf(fid, "R%u %s %s %s \n", i, ("m"+counter), nodey, compose("%.8e",Gvals(i)));
+                    fprintf(fid, "R%ug %s %s %s \n", i, ("m"+counter), nodey, compose("%.8e",Gvals(i)));
                     counter = counter+1;
                 else
                     %real case (RL)
@@ -37,7 +37,7 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
                 if(Cvals(i)~=0)
                     fprintf(fid, "L%u %s %s %s \n", i, nodex, ("m"+counter), compose("%.8e",Lvals(i)));
                     fprintf(fid, "C%u %s %s %s \n", i, ("m"+counter), nodey, compose("%.8e",Cvals(i)));
-                    fprintf(fid, "R%u %s %s %s \n", i, ("m"+counter), nodey, Gvals(i));
+                    fprintf(fid, "R%ug %s %s %s \n", i, ("m"+counter), nodey, Gvals(i));
                     counter = counter+1;
                 else
                     % L only
@@ -47,7 +47,7 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
                 % G should never be nonzero if everthing else is 0
             else if(Cvals(i)~=0)
                     fprintf(fid, "C%u %s %s %s \n", i, nodex, nodey, compose("%.8e",Cvals(i)));
-                    fprintf(fid, "R%u %s %s %s \n", i, nodex, nodey, compose("%.8e",Gvals(i)));
+                    fprintf(fid, "R%ug %s %s %s \n", i, nodex, nodey, compose("%.8e",Gvals(i)));
                 end
             end
         end
