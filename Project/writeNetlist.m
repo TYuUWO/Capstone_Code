@@ -15,39 +15,39 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
                 if(Cvals(i)~=0)
                     % %s on an integer will map onto an encoded character
                     % convert value to string?
-                    fprintf(fid, "R%u %s %s %s \n", i, nodex, ("m"+counter), Rvals(i));
-                    fprintf(fid, "L%u %s %s %s \n", i, ("m"+counter), ("m"+(counter+1)), Lvals(i));
+                    fprintf(fid, "R%u %s %s %s \n", i, nodex, ("m"+counter), compose("%.8e",Rvals(i)));
+                    fprintf(fid, "L%u %s %s %s \n", i, ("m"+counter), ("m"+(counter+1)), compose("%.8e",Lvals(i)));
                     counter = counter+1;
                     % I assume parallel is just 2 lines with same nodes
-                    fprintf(fid, "C%u %s %s %s \n", i, ("m"+counter), nodey, Cvals(i));
-                    fprintf(fid, "R%u %s %s %s \n", i, ("m"+counter), nodey, Gvals(i));
+                    fprintf(fid, "C%u %s %s %s \n", i, ("m"+counter), nodey, compose("%.8e",Cvals(i)));
+                    fprintf(fid, "R%u %s %s %s \n", i, ("m"+counter), nodey, compose("%.8e",Gvals(i)));
                     counter = counter+1;
                 else
                     %real case (RL)
-                    fprintf(fid, "R%u %s %s %s \n", i, nodex, ("m"+counter), Rvals(i));
-                    fprintf(fid, "L%u %s %s %s \n", i, ("m"+counter), nodey, Lvals(i));
+                    fprintf(fid, "R%u %s %s %s \n", i, nodex, ("m"+counter), compose("%.8e",Rvals(i)));
+                    fprintf(fid, "L%u %s %s %s \n", i, ("m"+counter), nodey, compose("%.8e",Lvals(i)));
                     counter = counter+1;
                 end
             else
                 % C=0, L=0, R nonzero
-                fprintf(fid, "R%u %s %s %s \n", i, nodex, nodey, Rvals(i));
+                fprintf(fid, "R%u %s %s %s \n", i, nodex, nodey, compose("%.8e",Rvals(i)));
             end
         else if(Lvals(i)~=0)
                 % complex (R = 0)
                 if(Cvals(i)~=0)
-                    fprintf(fid, "L%u %s %s %s \n", i, nodex, ("m"+counter), Lvals(i));
-                    fprintf(fid, "C%u %s %s %s \n", i, ("m"+counter), nodey, Cvals(i));
+                    fprintf(fid, "L%u %s %s %s \n", i, nodex, ("m"+counter), compose("%.8e",Lvals(i)));
+                    fprintf(fid, "C%u %s %s %s \n", i, ("m"+counter), nodey, compose("%.8e",Cvals(i)));
                     fprintf(fid, "R%u %s %s %s \n", i, ("m"+counter), nodey, Gvals(i));
                     counter = counter+1;
                 else
                     % L only
-                    fprintf(fid, "L%u %s %s %s \n", i, nodex, nodey, Lvals(i));
+                    fprintf(fid, "L%u %s %s %s \n", i, nodex, nodey, compose("%.8e",Lvals(i)));
                 end
                 % no real, only imaginary;
                 % G should never be nonzero if everthing else is 0
             else if(Cvals(i)~=0)
-                    fprintf(fid, "C%u %s %s %s \n", i, nodex, nodey, Cvals(i));
-                    fprintf(fid, "R%u %s %s %s \n", i, nodex, nodey, Gvals(i));
+                    fprintf(fid, "C%u %s %s %s \n", i, nodex, nodey, compose("%.8e",Cvals(i)));
+                    fprintf(fid, "R%u %s %s %s \n", i, nodex, nodey, compose("%.8e",Gvals(i)));
                 end
             end
         end
@@ -81,7 +81,7 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
              if (i==1) 
                 % initial case (1,n)
                 n = ports;
-                fprintf(fid, "R%u %s %s %s \n", length(valsMap)+i, "n1", ("n"+n), D(1,n));
+                fprintf(fid, "R%u %s %s %s \n", length(valsMap)+i, "n1", ("n"+n), compose("%.8e",D(1,n)));
              else
                 % calculate m and n
                 n = n-1;
@@ -89,7 +89,7 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
                     n = ports;
                     m=m+1;
                 end
-                fprintf(fid, "R%u %s %s %s \n", length(valsMap)+i, ("n"+m), ("n"+n), D(m,n));
+                fprintf(fid, "R%u %s %s %s \n", length(valsMap)+i, ("n"+m), ("n"+n), compose("%.8e",D(m,n)));
              end
         end
     end
@@ -99,7 +99,7 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
             if (i==1) 
                 % initial case (1,n)
                 n = ports;
-                fprintf(fid, "C%u %s %s %s \n", length(valsMap)+p2p+i, "n1", ("n"+n), E(1,n));
+                fprintf(fid, "C%u %s %s %s \n", length(valsMap)+p2p+i, "n1", ("n"+n), compose("%.8e",E(1,n)));
             else
                % calculate m and n
                 n = n-1;
@@ -107,7 +107,7 @@ function writeNetlist(valsMap, Rvals, Lvals, Cvals, Gvals,D,E,ports)
                     n = ports;
                     m=m+1;
                 end
-                fprintf(fid, "C%u %s %s %s \n", length(valsMap)+p2p+i, ("n"+m), ("n"+n), E(m,n));
+                fprintf(fid, "C%u %s %s %s \n", length(valsMap)+p2p+i, ("n"+m), ("n"+n), compose("%.8e",E(m,n)));
             end
         end
     end
