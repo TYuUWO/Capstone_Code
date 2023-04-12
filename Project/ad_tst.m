@@ -49,7 +49,10 @@ kmm = zeros(1,300);
 for ind = 1:300
     kmm(ind) = real(f(1,ind));
 end
+figure
 plot(imag(freq),reYY)
+figure
 plot(imag(freq),real(f(1,:)),'k--')
+figure
 plot(imag(freq),real(YY_11),'r--')
 %,imag(freq),real(f(1,:)),'k--',imag(freq),real(YY_11),'r--'

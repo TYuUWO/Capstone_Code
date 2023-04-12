@@ -1,4 +1,4 @@
-function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res)
+function [Rvals,Lvals,Cvals,Gvals,valsMap] = MultiRLC(ports,poles,res,SER,s,f)
 
     % matlab does not support arrays of matrices;
     % residues matrix will be kept in the form given by vfit3
